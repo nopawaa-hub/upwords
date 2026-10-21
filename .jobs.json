@@ -1,0 +1,157 @@
+{
+  "total_count": 2,
+  "jobs": [
+    {
+      "id": 118968591090,
+      "run_id": 39522250226,
+      "workflow_name": "Deploy to GitHub Pages",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/nopawaa-hub/upwords/actions/runs/39522250226",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVRjFTs8AAAAbsxSi8g",
+      "head_sha": "d0d6f82dde773f3a123c14398a4862df6228b516",
+      "url": "https://api.github.com/repos/nopawaa-hub/upwords/actions/jobs/118968591090",
+      "html_url": "https://github.com/nopawaa-hub/upwords/actions/runs/39522250226/job/118968591090",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-21T00:35:38Z",
+      "started_at": "2026-10-21T00:35:40Z",
+      "completed_at": "2026-10-21T00:35:55Z",
+      "name": "build",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-21T00:35:41Z",
+          "completed_at": "2026-10-21T00:35:42Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-21T00:35:42Z",
+          "completed_at": "2026-10-21T00:35:43Z"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-21T00:35:43Z",
+          "completed_at": "2026-10-21T00:35:47Z"
+        },
+        {
+          "name": "Run npm install",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-21T00:35:47Z",
+          "completed_at": "2026-10-21T00:35:50Z"
+        },
+        {
+          "name": "Run npm run build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-21T00:35:50Z",
+          "completed_at": "2026-10-21T00:35:52Z"
+        },
+        {
+          "name": "Run actions/upload-pages-artifact@v3",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-21T00:35:52Z",
+          "completed_at": "2026-10-21T00:35:53Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-21T00:35:53Z",
+          "completed_at": "2026-10-21T00:35:53Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-21T00:35:53Z",
+          "completed_at": "2026-10-21T00:35:53Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-21T00:35:53Z",
+          "completed_at": "2026-10-21T00:35:53Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/nopawaa-hub/upwords/check-runs/118968591090",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000000180,
+      "runner_name": "GitHub Actions 1000000180",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 118968682934,
+      "run_id": 39522250226,
+      "workflow_name": "Deploy to GitHub Pages",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/nopawaa-hub/upwords/actions/runs/39522250226",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVRjFTs8AAAAbsxYJtg",
+      "head_sha": "d0d6f82dde773f3a123c14398a4862df6228b516",
+      "url": "https://api.github.com/repos/nopawaa-hub/upwords/actions/jobs/118968682934",
+      "html_url": "https://github.com/nopawaa-hub/upwords/actions/runs/39522250226/job/118968682934",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-21T00:35:55Z",
+      "started_at": "2026-10-21T00:35:59Z",
+      "completed_at": "2026-10-21T00:36:16Z",
+      "name": "deploy",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-21T00:36:00Z",
+          "completed_at": "2026-10-21T00:36:01Z"
+        },
+        {
+          "name": "Run actions/deploy-pages@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-21T00:36:01Z",
+          "completed_at": "2026-10-21T00:36:14Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-21T00:36:14Z",
+          "completed_at": "2026-10-21T00:36:14Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/nopawaa-hub/upwords/check-runs/118968682934",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000000182,
+      "runner_name": "GitHub Actions 1000000182",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}
