@@ -737,6 +737,307 @@ function detectWordsOnBoard(board) {
   return words;
 }
 
+// =====================================================================
+// RulesModal — bright, kid-friendly interactive rules explorer
+// Each rule has a mini animated visual demo built with plain DOM/CSS
+// =====================================================================
+function RulesModal({ onClose }) {
+  const [ruleIndex, setRuleIndex] = useState(0);
+
+  const rules = [
+    {
+      emoji: '➡️',
+      title: 'Build words ACROSS or DOWN!',
+      color: 'from-sky-400 to-blue-500',
+      bg: 'bg-sky-50',
+      border: 'border-sky-300',
+      text: 'text-sky-700',
+      demo: <DemoAcrossDown />,
+      blurb: 'Place letters side by side (➡️) or on top of each other (⬇️) to make a word — just like reading a book!',
+    },
+    {
+      emoji: '🧱',
+      title: 'STACK letters to change words!',
+      color: 'from-amber-400 to-orange-500',
+      bg: 'bg-amber-50',
+      border: 'border-amber-300',
+      text: 'text-amber-700',
+      demo: <DemoStack />,
+      blurb: 'Put a new letter ON TOP of an old one and the word transforms! CAT becomes BAT when you stack B on C!',
+    },
+    {
+      emoji: '👀',
+      title: 'Only the TOP letter counts!',
+      color: 'from-purple-400 to-fuchsia-500',
+      bg: 'bg-purple-50',
+      border: 'border-purple-300',
+      text: 'text-purple-700',
+      demo: <DemoTopLetter />,
+      blurb: 'When tiles are stacked, you read the letter on the very top. The letters underneath hide away!',
+    },
+    {
+      emoji: '🏗️',
+      title: 'Max height is 5 tiles!',
+      color: 'from-rose-400 to-pink-500',
+      bg: 'bg-rose-50',
+      border: 'border-rose-300',
+      text: 'text-rose-700',
+      demo: <DemoMaxHeight />,
+      blurb: 'You can stack up to 5 tiles high — then that square is full! Build somewhere else.',
+    },
+    {
+      emoji: '🏆',
+      title: 'Taller stacks = more points!',
+      color: 'from-emerald-400 to-teal-500',
+      bg: 'bg-emerald-50',
+      border: 'border-emerald-300',
+      text: 'text-emerald-700',
+      demo: <DemoScoring />,
+      blurb: 'Every tile in a stack you use scores a point. The taller the tower, the bigger the score!',
+    },
+  ];
+
+  const rule = rules[ruleIndex];
+
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-gradient-to-br from-indigo-100 via-white to-pink-100 border-4 border-indigo-300 rounded-3xl max-w-2xl w-full p-6 shadow-2xl">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-black bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            🎮 How to Play Upwords!
+          </h2>
+          <button
+            onClick={onClose}
+            className="w-9 h-9 rounded-full bg-rose-400 hover:bg-rose-500 text-white font-black text-lg shadow-md transition-transform hover:scale-110"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Rule tabs */}
+        <div className="flex gap-2 mb-4 justify-center">
+          {rules.map((r, i) => (
+            <button
+              key={i}
+              onClick={() => setRuleIndex(i)}
+              className={`text-2xl w-11 h-11 rounded-2xl border-2 transition-all shadow-sm ${
+                i === ruleIndex
+                  ? 'bg-white border-indigo-400 scale-110 shadow-lg'
+                  : 'bg-white/60 border-slate-200 hover:border-indigo-300 hover:scale-105'
+              }`}
+            >
+              {r.emoji}
+            </button>
+          ))}
+        </div>
+
+        {/* Current rule card */}
+        <div className={`${rule.bg} border-2 ${rule.border} rounded-2xl p-5 space-y-4`}>
+          <h3 className={`text-xl font-black ${rule.text} text-center`}>
+            {rule.emoji} {rule.title}
+          </h3>
+
+          {/* Animated demo area */}
+          <div className="flex items-center justify-center min-h-[120px]">
+            {rule.demo}
+          </div>
+
+          <p className="text-center text-sm font-semibold text-slate-700 leading-relaxed">
+            {rule.blurb}
+          </p>
+        </div>
+
+        {/* Nav buttons */}
+        <div className="flex items-center justify-between mt-5">
+          <button
+            onClick={() => setRuleIndex(Math.max(0, ruleIndex - 1))}
+            disabled={ruleIndex === 0}
+            className="px-5 py-2.5 rounded-2xl bg-slate-200 hover:bg-slate-300 disabled:opacity-40 font-black text-slate-700 text-sm transition-all"
+          >
+            ⬅️ Back
+          </button>
+          <span className="text-xs font-bold text-slate-500">
+            Rule {ruleIndex + 1} of {rules.length}
+          </span>
+          {ruleIndex < rules.length - 1 ? (
+            <button
+              onClick={() => setRuleIndex(ruleIndex + 1)}
+              className={`px-5 py-2.5 rounded-2xl bg-gradient-to-r ${rule.color} text-white font-black text-sm shadow-md transition-transform hover:scale-105`}
+            >
+              Next ➡️
+            </button>
+          ) : (
+            <button
+              onClick={onClose}
+              className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-green-400 to-emerald-500 text-white font-black text-sm shadow-md transition-transform hover:scale-105 animate-bounce"
+            >
+              🎉 Let's Play!
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// --- Mini demo components (pure CSS animations, kid-friendly) ---
+
+function DemoAcrossDown() {
+  const [dir, setDir] = useState('across');
+  useEffect(() => {
+    const t = setInterval(() => setDir(d => (d === 'across' ? 'down' : 'across')), 2000);
+    return () => clearInterval(t);
+  }, []);
+  const letters = ['C', 'A', 'T'];
+  return (
+    <div className="flex gap-3 items-center">
+      <div className={`flex gap-1.5 ${dir === 'down' ? 'flex-col' : 'flex-row'} transition-all`}>
+        {letters.map((l, i) => (
+          <div
+            key={i}
+            className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-300 to-blue-400 border-b-4 border-blue-600 flex items-center justify-center text-2xl font-black text-white shadow-md"
+            style={{ transitionDelay: `${i * 60}ms` }}
+          >
+            {l}
+          </div>
+        ))}
+      </div>
+      <div className="text-3xl">{dir === 'across' ? '➡️' : '⬇️'}</div>
+    </div>
+  );
+}
+
+function DemoStack() {
+  const [stacked, setStacked] = useState(false);
+  useEffect(() => {
+    const t = setInterval(() => setStacked(s => !s), 1600);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <div className="flex items-end gap-3">
+      {['C', 'A', 'T'].map((l, i) => (
+        <div key={i} className="flex flex-col items-center">
+          {i === 0 && (
+            <div
+              className={`w-12 h-12 rounded-xl bg-gradient-to-br from-amber-300 to-orange-400 border-b-4 border-orange-600 flex items-center justify-center text-2xl font-black text-white shadow-md transition-all duration-500 ${
+                stacked ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0'
+              }`}
+            >
+              B
+            </div>
+          )}
+          <div
+            className={`w-12 h-12 rounded-xl border-b-4 flex items-center justify-center text-2xl font-black shadow-md transition-all duration-500 ${
+              i === 0 && stacked
+                ? 'bg-slate-300 border-slate-400 text-slate-400 scale-95'
+                : 'bg-gradient-to-br from-amber-300 to-orange-400 border-orange-600 text-white'
+            }`}
+          >
+            {l}
+          </div>
+        </div>
+      ))}
+      <div className="text-2xl font-black text-amber-600 ml-2 transition-all">
+        {stacked ? '= BAT! 🦇' : '= CAT 🐱'}
+      </div>
+    </div>
+  );
+}
+
+function DemoTopLetter() {
+  const [showTop, setShowTop] = useState(true);
+  useEffect(() => {
+    const t = setInterval(() => setShowTop(s => !s), 1500);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col-reverse items-center">
+        {['R', 'A'].map((l, i) => (
+          <div
+            key={l}
+            className={`w-12 h-12 rounded-xl border-b-4 flex items-center justify-center text-2xl font-black shadow-md -mt-3 transition-all duration-500 ${
+              showTop
+                ? i === 1
+                  ? 'bg-gradient-to-br from-purple-300 to-fuchsia-400 border-fuchsia-600 text-white ring-4 ring-yellow-300'
+                  : 'bg-slate-300 border-slate-400 text-slate-400'
+                : 'bg-gradient-to-br from-purple-300 to-fuchsia-400 border-fuchsia-600 text-white'
+            }`}
+          >
+            {l}
+          </div>
+        ))}
+      </div>
+      <div className="text-sm font-black text-purple-600 transition-all">
+        {showTop ? '👀 We read "A" — the top one!' : 'Two letters stacked...'}
+      </div>
+    </div>
+  );
+}
+
+function DemoMaxHeight() {
+  const [height, setHeight] = useState(1);
+  useEffect(() => {
+    const t = setInterval(() => setHeight(h => (h >= 5 ? 1 : h + 1)), 500);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <div className="flex items-end gap-4">
+      <div className="flex flex-col-reverse">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div
+            key={i}
+            className={`w-12 h-9 rounded-lg border-b-2 -mt-2 transition-all duration-300 flex items-center justify-center text-sm font-black ${
+              i < height
+                ? i === 4 && height === 5
+                  ? 'bg-gradient-to-br from-rose-300 to-pink-400 border-pink-600 text-white'
+                  : 'bg-gradient-to-br from-rose-200 to-pink-300 border-pink-500 text-white'
+                : 'opacity-0'
+            }`}
+          >
+            {i + 1}
+          </div>
+        ))}
+      </div>
+      <div className="text-lg font-black text-rose-600">
+        {height}/5 {height === 5 && '🛑 FULL!'}
+      </div>
+    </div>
+  );
+}
+
+function DemoScoring() {
+  const [stack, setStack] = useState([3, 1, 2]);
+  useEffect(() => {
+    const seq = [[3, 1, 2], [4, 2, 3], [2, 3, 1]];
+    let i = 0;
+    const t = setInterval(() => {
+      i = (i + 1) % seq.length;
+      setStack(seq[i]);
+    }, 1500);
+    return () => clearInterval(t);
+  }, []);
+  const total = stack.reduce((a, b) => a + b, 0);
+  return (
+    <div className="flex items-end gap-3">
+      {stack.map((h, i) => (
+        <div key={i} className="flex flex-col-reverse items-center">
+          {Array.from({ length: h }).map((_, j) => (
+            <div
+              key={j}
+              className="w-10 h-7 rounded-md bg-gradient-to-br from-emerald-300 to-teal-400 border-b-2 border-teal-600 -mt-1.5 shadow-sm"
+            />
+          ))}
+        </div>
+      ))}
+      <div className="text-xl font-black text-emerald-600 ml-2">
+        = {total} points! ⭐
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   // Primary mode: 'TUTORIAL' | 'SANDBOX' | 'TEACHER_DEMO'
   const [appMode, setAppMode] = useState('TUTORIAL');
@@ -2242,7 +2543,7 @@ export default function App() {
   }
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-slate-950 text-white select-none font-sans">
+    <div className="relative h-screen w-screen overflow-hidden bg-gradient-to-br from-indigo-200 via-sky-100 to-pink-200 text-white select-none font-sans">
       {/* FULL-SCREEN INTERACTIVE 3D BACKGROUND CANVAS */}
       <div
         ref={mountRef}
@@ -2250,7 +2551,7 @@ export default function App() {
       />
 
       {/* TOP FLOATING HEADER OVERLAY CARD */}
-      <header className="absolute top-3 left-3 right-3 h-16 bg-slate-900/80 backdrop-blur-xl border border-slate-700/80 rounded-2xl px-4 flex items-center justify-between gap-3 z-30 shadow-2xl pointer-events-auto">
+      <header className="absolute top-3 left-3 right-3 h-16 bg-gradient-to-r from-violet-500/90 via-fuchsia-500/90 to-pink-500/90 backdrop-blur-xl border-2 border-white/40 rounded-2xl px-4 flex items-center justify-between gap-3 z-30 shadow-2xl shadow-fuchsia-500/30 pointer-events-auto">
         {/* Brand Title */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-md shadow-amber-500/20 font-black text-slate-950 text-xl border border-amber-200">
@@ -2270,7 +2571,7 @@ export default function App() {
         </div>
 
         {/* Mode Switcher Tabs */}
-        <div className="flex items-center bg-slate-950/70 p-1 rounded-xl border border-slate-700/80">
+        <div className="flex items-center bg-white/20 p-1 rounded-xl border border-white/40">
           <button
             onClick={() => setAppMode('TUTORIAL')}
             className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-extrabold transition-all ${
@@ -3121,50 +3422,9 @@ export default function App() {
         </div>
       </footer>
 
-      {/* CLASSROOM HELP & CONTROLS MODAL */}
+      {/* KID-FRIENDLY INTERACTIVE RULES MODAL */}
       {showHelpModal && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border-2 border-sky-400/60 rounded-3xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-black text-white">
-                Upwords 3D – Classroom Guide & Controls
-              </h2>
-              <button
-                onClick={() => setShowHelpModal(false)}
-                className="w-8 h-8 rounded-xl bg-slate-800 hover:bg-rose-600 font-black"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="space-y-3 text-sm text-slate-200">
-              <div className="p-3 rounded-2xl bg-slate-800/80 border border-slate-700">
-                <div className="font-black text-amber-300 mb-1">🖱️ 3D Camera Navigation</div>
-                <ul className="list-disc list-inside text-xs space-y-1 text-slate-300">
-                  <li><strong>Left Click + Drag:</strong> Rotate the 3D board around any angle.</li>
-                  <li><strong>Mouse Wheel / Pinch:</strong> Zoom in and out smoothly.</li>
-                  <li><strong>Right Click + Drag:</strong> Pan across the board surface.</li>
-                  <li><strong>Double-Click Any Tile:</strong> Focus the camera directly on that stack.</li>
-                  <li><strong>Side View Button:</strong> Low-angle view so pupils can clearly count stacked tiles!</li>
-                </ul>
-              </div>
-              <div className="p-3 rounded-2xl bg-slate-800/80 border border-slate-700">
-                <div className="font-black text-emerald-300 mb-1">📚 Key Upwords Rules</div>
-                <ul className="list-disc list-inside text-xs space-y-1 text-slate-300">
-                  <li>Build words <strong>Horizontally (→)</strong> or <strong>Vertically (↓)</strong>.</li>
-                  <li>Stack new letters on top of existing tiles to transform words (CAT → RAT → BAT → HAT).</li>
-                  <li>Only the <strong>topmost letter</strong> of each stack is read to form words.</li>
-                  <li>Maximum height is <strong>5 tiles per square</strong>.</li>
-                </ul>
-              </div>
-            </div>
-            <button
-              onClick={() => setShowHelpModal(false)}
-              className="w-full py-3 rounded-2xl bg-sky-400 hover:bg-sky-300 text-slate-950 font-black text-sm"
-            >
-              Got It — Back to Upwords 3D!
-            </button>
-          </div>
-        </div>
+        <RulesModal onClose={() => setShowHelpModal(false)} />
       )}
     </div>
   );
